@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calorie Prediction</title>
+</head>
+<body>
+  <h2>Calories Burnt Predictor</h2>
+  <form id="calorieForm">
+    <select id="gender">
+      <option value="0">Male</option>
+      <option value="1">Female</option>
+    </select><br>
+    <input type="number" id="age" placeholder="Age"><br>
+    <input type="number" id="height" placeholder="Height"><br>
+    <input type="number" id="weight" placeholder="Weight"><br>
+    <input type="number" id="duration" placeholder="Duration"><br>
+    <input type="number" id="heart_rate" placeholder="Heart Rate"><br>
+    <input type="number" id="body_temp" placeholder="Body Temp"><br>
+    <button type="submit">Predict</button>
+  </form>
+  <p id="result"></p>
+
+  <script>
+    document.getElementById("calorieForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      let data = {
+        gender: parseInt(document.getElementById("gender").value),
+        age: parseFloat(document.getElementById("age").value),
+        height: parseFloat(document.getElementById("height").value),
+        weight: parseFloat(document.getElementById("weight").value),
+        duration: parseFloat(document.getElementById("duration").value),
+        heart_rate: parseFloat(document.getElementById("heart_rate").value),
+        body_temp: parseFloat(document.getElementById("body_temp").value)
+      };
+      let res = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+      });
+      let out = await res.json();
+      document.getElementById("result").innerText = "Calories Burnt: " + out.calories_burnt;
+    });
+  </script>
+</body>
+</html>
